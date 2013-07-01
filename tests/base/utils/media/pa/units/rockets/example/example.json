@@ -1,0 +1,5 @@
+{
+  "base_spec": "/pa/units/templates/base_example/base_example.json", 
+  "key": 1, 
+  "key2": "value"
+}

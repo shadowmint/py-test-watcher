@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html ng-app>
+  <head>
+    <title>PAU</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="css/base.css" rel="stylesheet" type="text/css" media="screen"></link>
+    <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
+    <script src="scripts/angular.min.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+    <script src="scripts/bridge.js"></script>
+    <script>
+      function Controller($scope) {
+        $scope.test_runner = preference("tests.runner");
+        $scope.select_test_runner = function() {
+          trigger("Home.select_test_runner");
+          $scope.test_runner = preference("tests.runner");
+        };
+
+        $scope.test_path = preference("tests.location");
+        $scope.select_test_path = function() {
+          trigger("Home.select_test_path");
+          $scope.test_path = preference("tests.location");
+        };
+
+        $scope.test_watch = preference("tests.watch");
+        $scope.select_test_watch = function() {
+          trigger("Home.select_test_watch_path");
+          $scope.test_watch = preference("tests.watch");
+        };
+
+        $scope.test_results = {"value" : ["No tests run"]};
+        $scope.tests_passed = true;
+        $scope.test_running = false;
+        $scope.tests_started = false;
+        $scope.run_tests = function() {
+          if (!$scope.tests_started) {
+            $scope.tests_started = true;
+            $scope.test_running = true;
+            var runner = function() {
+              try {
+                $scope.tests_running = true;
+                $scope.$apply();
+                setTimeout(function() {
+                  $scope.test_results = trigger("Home.run_tests");
+                  $scope.test_results.value = $scope.test_results.value.split("\n");
+                  $scope.tests_passed = $scope.test_results.success;
+                  $scope.tests_running = false;
+                  $scope.$apply();
+                }, 500);
+              }
+              catch(e) {
+                alert("Failed: " + e.toString());
+              }
+              setTimeout(runner, 5000);
+            };
+            runner();
+          }
+        };
+      }
+    </script>
+  </head>
+  <body ng-controller="Controller">
+    <div class="all">
+
+      <!-- Common header -->
+      <div></div><script>template("inc/header.html")</script>
+
+      <div class="content">
+        <h1>Tests</h1>
+
+        <div ng-hide="tests_started">
+          <a href="#" ng-click="run_tests()">Run</a>
+        </div>
+
+        <div class="tests_running">
+            <div class="running" ng-show="tests_running">
+              Tests running
+            </div>
+            <div class="idle" ng-hide="tests_running">
+              Idle
+            </div>
+        </div>
+
+        <div class="tests">
+          <div class="passed" ng-show="tests_passed">Passed<br/>{{test_results.last_update}}</div>
+          <div class="failed" ng-hide="tests_passed">Failed<br/>{{test_results.last_update}}</div>
+          <div class="test_results">
+            <div ng-repeat="item in test_results.value">
+              <div ng-bind-html-unsafe="item">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Common footer -->
+      <div></div><script>template("inc/footer.html")</script>
+
+    </div>
+  </body>
+</html>

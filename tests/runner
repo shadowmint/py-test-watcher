@@ -1,0 +1,15 @@
+#!/bin/sh
+if [ -f runner ]; then
+  ITEM=`pwd`/runner.py
+else
+  ITEM=`pwd`/tests/runner.py
+fi
+
+echo "-- With python2.7"
+python2.7 $ITEM 2>&1 | grep ^ERROR
+
+echo "-- With python3.3"
+python3.3 $ITEM 2>&1 | grep ^ERROR
+
+echo "-- With pypy"
+pypy $ITEM 2>&1 | grep ^ERROR

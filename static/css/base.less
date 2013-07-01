@@ -1,0 +1,71 @@
+/** Common constants */
+@import "inc/config.less";
+@import "inc/macros.less";
+
+.all {
+  background: @background-color;
+  width: 100%;
+  height: 100%;
+}
+
+/** Main content area */
+.content {
+  h1 {
+    .reset;
+    font-size: 25px;
+  }
+  h2 {
+    .reset;
+    font-size: 20px;
+  }
+  h3 {
+    .reset;
+    font-size: 18px;
+    margin-top: 10px !important;
+  }
+  padding: 10px 10px 10px 20px;
+}
+
+.tests {
+  .passed {
+    margin: 10px 10px 10px 0px;
+    background: #efe;
+    border: 1px solid #0d0;
+    border-radius: 4px;
+    padding: 5px;
+  }
+  .failed {
+    margin: 10px 10px 10px 0px;
+    background: #fee;
+    border: 1px solid #d00;
+    border-radius: 4px;
+    padding: 5px;
+  }
+}
+
+.tests_running {
+  margin: 10px 10px 10px 0px;
+  padding: 5px;
+  border: 1px solid #000;
+  background: #fff;
+}
+
+.test_results {
+  margin-right: 10px;
+  font-size: 0.8em;
+  div {
+    width: 300px;
+    div {
+      white-space: nowrap;
+    }
+  }
+}
+
+/** Search styles */
+@import "inc/search.less";
+
+/** Header styles */
+@import "inc/header.less";
+
+/** Footer styles */
+@import "inc/footer.less";
